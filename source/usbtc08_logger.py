@@ -3,6 +3,7 @@
 
 # Pico Technology TC-08 datalogger
 
+import os
 import csv
 import datetime
 import matplotlib.pyplot as plt
@@ -22,8 +23,8 @@ DEBUG = True
 # Set to X for voltage readings.
 CHANNEL_CONFIG = {
     usbtc08.USBTC08_CHANNEL_1: 'K',
-    usbtc08.USBTC08_CHANNEL_2: ' ',
-    usbtc08.USBTC08_CHANNEL_3: ' ',
+    usbtc08.USBTC08_CHANNEL_2: 'K',
+    usbtc08.USBTC08_CHANNEL_3: 'K',
     usbtc08.USBTC08_CHANNEL_4: 'K',
     usbtc08.USBTC08_CHANNEL_5: ' ',
     usbtc08.USBTC08_CHANNEL_6: ' ',
@@ -31,7 +32,7 @@ CHANNEL_CONFIG = {
     usbtc08.USBTC08_CHANNEL_8: ' '}
 # Set the name of each channel.
 CHANNEL_NAME = {
-    usbtc08.USBTC08_CHANNEL_1: 'Channel 1',
+    usbtc08.USBTC08_CHANNEL_1: 'Flame test',
     usbtc08.USBTC08_CHANNEL_2: 'Channel 2',
     usbtc08.USBTC08_CHANNEL_3: 'Channel 3',
     usbtc08.USBTC08_CHANNEL_4: 'Channel 4',
@@ -256,6 +257,13 @@ class usbtc08_logger():
         return filename
 
     def save_data(self):
+        # Create LOGDIR if needed
+        if not os.path.exists(LOGDIR):
+            try:
+                os.makedirs(LOGDIR)
+            except OSError as e:
+                if e.errno != errno.EEXIST:
+                    raise logger_error(1, 'Creating logging folder.')
         # Save the figure as PNG file
         plt.savefig(self.filename('png'))
         # Which channel has the most data

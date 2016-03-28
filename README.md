@@ -41,6 +41,7 @@ $ sudo apt-get install libusbtc08
 Build the Python module using SWIG:
 
 ```bash
+$ cd usbtc08/source/
 $ swig -python usbtc08.i
 ```
 
@@ -98,14 +99,14 @@ Optionally, specify the duration (in seconds) of the logging session and the sam
 $ python usbtc08_logger.py log 60 1500
 ```
 
-
 Links
 ===
 
 [Pico Technology TC-08 thermocouple data logger](https://www.picotech.com/data-logger/tc-08/thermocouple-data-logger)
 
-
 Status
 ==
 
-Debugging is ongoing ...
+First commit of a working version has been pushed to the repository. See [Issues](https://github.com/bankrasrg/usbtc08/issues) for changes/improvements that are still due.
+
+It appears that the cold-junction temperature is not available in streaming mode and needs to be read using the usbtc08.usb_tc08_get_single() function. This means that for repeated measurement of the cold-junction temperature, the data streaming of the active channels needs to be temporarily stopped. To be confirmed ...
