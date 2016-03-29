@@ -54,10 +54,11 @@ $ python setup.py build_ext --inplace
 Example Usage
 ===
 
-Edit the file usbtc08_logger.py to configure the thermocouple types and label the channels. These changes are made to the CHANNEL_CONFIG and CHANNEL_NAME dictionaries. An example is given below, where five K-type thermocouples are used and three disabled are channels:
+Edit the file usbtc08_logger.py to configure the thermocouple types and label the channels. These changes are made to the CHANNEL_CONFIG and CHANNEL_NAME dictionaries. An example is given below, where five K-type thermocouples are used and three disabled are channels. Do not set the cold-junction channel to anything other than 'C' or it raise an error reading the data in streaming mode.
 
 ```
 CHANNEL_CONFIG = {
+    usbtc08.USBTC08_CHANNEL_CJC: 'C', # Needs to be 'C'.
     usbtc08.USBTC08_CHANNEL_1: 'K',
     usbtc08.USBTC08_CHANNEL_2: 'K',
     usbtc08.USBTC08_CHANNEL_3: 'K',
@@ -70,6 +71,7 @@ CHANNEL_CONFIG = {
 
 ```
 CHANNEL_NAME = {
+    usbtc08.USBTC08_CHANNEL_CJC: 'Cold-junction',
     usbtc08.USBTC08_CHANNEL_1: 'Front',
     usbtc08.USBTC08_CHANNEL_2: 'Rear',
     usbtc08.USBTC08_CHANNEL_3: 'Left',
@@ -78,6 +80,15 @@ CHANNEL_NAME = {
     usbtc08.USBTC08_CHANNEL_6: 'Channel 6',
     usbtc08.USBTC08_CHANNEL_7: 'Channel 7',
     usbtc08.USBTC08_CHANNEL_8: 'Channel 8'}
+```
+
+The preferred unit is set to the global variable UNIT.
+
+```
+UNIT = usbtc08.USBTC08_UNITS_CENTIGRADE
+     # usbtc08.USBTC08_UNITS_FAHRENHEIT
+     # usbtc08.USBTC08_UNITS_KELVIN
+     # usbtc08.USBTC08_UNITS_RANKINE
 ```
 
 Other settings to consider are the (relative) folder for writing the logging files, the local mains frequency for the filter setting, the use of deskewed data and the output of debug information to the terminal.
@@ -108,5 +119,3 @@ Status
 ==
 
 First commit of a working version has been pushed to the repository. See [Issues](https://github.com/bankrasrg/usbtc08/issues) for changes/improvements that are still due.
-
-It appears that the cold-junction temperature is not available in streaming mode and needs to be read using the usbtc08.usb_tc08_get_single() function. This means that for repeated measurement of the cold-junction temperature, the data streaming of the active channels needs to be temporarily stopped. To be confirmed ...
