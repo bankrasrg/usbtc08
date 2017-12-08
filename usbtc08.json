@@ -2,6 +2,6 @@
     "name": "usbtc08",
     "version": "0.1",
     "author": "Radko Bankras <radko@bankras.net>",
-    "license": "MIT",
+    "license": "GNU General Public License version 3",
     "description": "Python interface for Pico Technology TC-08 thermocouple logger"
 }
